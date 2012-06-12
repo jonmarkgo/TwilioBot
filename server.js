@@ -3,8 +3,7 @@ var app = require('http').createServer(handler)
   , fs = require('fs')
   , net = require('net')
 
-tcpGuests = [];
-chatGuests = [];
+arduinoTcp = null;
 
 app.listen(8090);
 
@@ -22,12 +21,10 @@ function handler (req, res) {
 }
 
 io.sockets.on('connection', function (socket) {
-  socket.on('ledbuttonclick', function (data) {
-    console.log(data.led);
-        for (g in tcpGuests) {
+  socket.on('gobuttonclick', function (data) {
 
-        tcpGuests[g].write(data.led.toString());
-    }
+        arduinoTcp.write(data.direction);
+    
   });
 });
 
@@ -40,12 +37,12 @@ tcpServer.on('connection',function(socket){
    socket.write('connected to the tcp server\r\n');
     console.log('num of connections on port 1337: ' + tcpServer.connections);
     
-    tcpGuests.push(socket);
+    arduinoTcp = socket;
     
     socket.on('data',function(data){
         console.log('received on tcp socket:'+data);
         socket.write('msg received\r\n');
-            
+            io.sockets.broadcast.emit('tcpreply'{data:data});
         }
     );
 });

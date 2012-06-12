@@ -1,23 +1,28 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script>
-var ledon = 0;
-$(document).ready(function() {
+var dir = 2;
+
     var socket = io.connect('http://jonsplanet.com:8090');
-$("#ledbutton").click(function() {
+$("#gobutton").click(function() {
+
+    socket.emit('gobuttonclick', { direction: dir });
+ 
+  //$("#ledbutton").html('Turn Off');
+
   
-  if (ledon == 1) {
-  	ledon = 0;
-  $("#ledbutton").html('Turn On');
-  }
-  else {
-  	ledon = 1;
-  $("#ledbutton").html('Turn Off');
-}
-  socket.emit('ledbuttonclick', { led : ledon });
 });
-});
+
+  socket.on('tcpreply', function (data) {
+
+        arduinoTcp.write(data.direction);
+    
+  });
+
 </script>
 
-<button id="ledbutton">Turn On</button>
+<button id="gobutton">Forward</button>
 
+<button id="sonarbutton">Get Sonar</button>
+
+<br><div id="sonarval">0</div>
