@@ -1,0 +1,23 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script>
+var ledon = 0;
+$(document).ready(function() {
+    var socket = io.connect('http://jonsplanet.com:8090');
+$("#ledbutton").click(function() {
+  
+  if (ledon == 1) {
+  	ledon = 0;
+  $("#ledbutton").html('Turn On');
+  }
+  else {
+  	ledon = 1;
+  $("#ledbutton").html('Turn Off');
+}
+  socket.emit('ledbuttonclick', { led : ledon });
+});
+});
+</script>
+
+<button id="ledbutton">Turn On</button>
+
