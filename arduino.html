@@ -1,9 +1,11 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="http://code.jquery.com/jquery.min.js"></script>
 <script>
+
 var dir = 2;
 
     var socket = io.connect('http://jonsplanet.com:8090');
+    $(document).ready(function() {
 $("#gobutton").click(function() {
 
     socket.emit('gobuttonclick', { direction: dir });
@@ -19,6 +21,7 @@ $("#sonarbutton").click(function() {
 });
 
   socket.on('tcpreply', function (data) {
+    console.log(data);
     if (data.reply == '2OK') {
       $('#gobutton').html('Backward');
       dir = 8;
@@ -29,11 +32,11 @@ $("#sonarbutton").click(function() {
       dir = 2; 
     }
     else {
-      $('#sonarval').html(data.reply);
+      $('#sonarval').html(data.reply + " inches");
     }
        
   });
-
+});
 </script>
 
 <button id="gobutton">Forward</button>

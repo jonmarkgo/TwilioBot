@@ -23,12 +23,14 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
   socket.on('gobuttonclick', function (data) {
 if (arduinoTcp != null) {
-        arduinoTcp.write(data.direction);
+        arduinoTcp.write(data.direction.toString());
+       console.log("Sending direction " + data.direction);
     }
   });
   socket.on('sonarbuttonclick', function (data) {
 if (arduinoTcp != null) {
         arduinoTcp.write('5');
+        console.log("Sending 5");
     }
   });
 });
@@ -39,15 +41,17 @@ var tcpServer = net.createServer(function (socket) {
 });
 
 tcpServer.on('connection',function(socket){
-   socket.write('connected to the tcp server\r\n');
+  // socket.write('connected to the tcp server\r\n');
     console.log('num of connections on port 1337: ' + tcpServer.connections);
     
     arduinoTcp = socket;
     
-    socket.on('data',function(data){
-        console.log('received on tcp socket:'+data);
-        socket.write('msg received\r\n');
-            io.sockets.emit('tcpreply',{reply:data});
+    socket.on('data',function(mydata){
+
+        console.log('received on tcp socket:'+mydata);
+
+        //socket.write('msg received\r\n');
+            io.sockets.emit('tcpreply',{reply:mydata + ''});
         }
     );
 });
