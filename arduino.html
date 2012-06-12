@@ -13,10 +13,25 @@ $("#gobutton").click(function() {
   
 });
 
-  socket.on('tcpreply', function (data) {
+$("#sonarbutton").click(function() {
+   socket.emit('sonarbuttonclick');
+ 
+});
 
-        arduinoTcp.write(data.direction);
-    
+  socket.on('tcpreply', function (data) {
+    if (data.reply == '2OK') {
+      $('#gobutton').html('Backward');
+      dir = 8;
+
+    }
+    else if (data.reply == '8OK') {
+          $('#gobutton').html('Forward');
+      dir = 2; 
+    }
+    else {
+      $('#sonarval').html(data.reply);
+    }
+       
   });
 
 </script>

@@ -22,9 +22,14 @@ function handler (req, res) {
 
 io.sockets.on('connection', function (socket) {
   socket.on('gobuttonclick', function (data) {
-
+if (arduinoTcp != null) {
         arduinoTcp.write(data.direction);
-    
+    }
+  });
+  socket.on('sonarbuttonclick', function (data) {
+if (arduinoTcp != null) {
+        arduinoTcp.write('5');
+    }
   });
 });
 
@@ -42,7 +47,7 @@ tcpServer.on('connection',function(socket){
     socket.on('data',function(data){
         console.log('received on tcp socket:'+data);
         socket.write('msg received\r\n');
-            io.sockets.broadcast.emit('tcpreply'{data:data});
+            io.sockets.emit('tcpreply',{reply:data});
         }
     );
 });
