@@ -1,20 +1,20 @@
 {
-author: "Jonathan Gottfried <jonmarkgo@gmail.com>",
-name: "TwilioBot",
-description: "Twilio + Node.js Arduino Robot",
-version: "1.0.0",
-repository: {
-type: "git",
-url: "git://github.com/jonmarkgo/TwilioBot.git"
+"author": "Jonathan Gottfried <jonmarkgo@gmail.com>",
+"name": "TwilioBot",
+"description": "Twilio + Node.js Arduino Robot",
+"version": "1.0.0",
+"repository": {
+"type": "git",
+"url": "git://github.com/jonmarkgo/TwilioBot.git"
 },
-main: "app.js",
-dependencies: {
-express: "2.5.x",
-twilio: "0.4.0"
+"main": "server.js",
+"dependencies": {
+"express": ">=3.0",
+"twilio-api": "0.3.0"
 },
-devDependencies: { },
-optionalDependencies: { },
-engines: {
-node: "*"
+"devDependencies": { },
+"optionalDependencies": { },
+"engines": {
+"node": ">=0.4"
 }
 }
