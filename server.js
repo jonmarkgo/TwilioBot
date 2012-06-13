@@ -15,9 +15,17 @@ var tcpServer = net.createServer(function (socket) {
 
 function getDigits(call, input) {
   console.log('pressed ' + input);
-  arduinoTcp.write(input);
-  curr_call = call;
-  call.gather(getDigits, {numDigits: 1});
+  if (arduinoTcp === null) {
+    call.say("I can't do that for you, Hal. I'm offline.");
+  } else {
+	curr_call = call;
+	if (['2', '4', '5', '6', '8', '0'].indexOf(input) >= 0) {
+	  arduinoTcp.write(input);
+	  call.gather(getDigits, {numDigits: 1});
+	} else {
+	  call.gather(getDigits, {numDigits: 1}).say("I can't do that for you, Hal. Invalid command.");
+	}
+  }
 }
 
 tcpServer.on('connection', function (socket) {
@@ -30,7 +38,7 @@ tcpServer.on('connection', function (socket) {
       if (err) {
         throw err;
       }
-      if (mydata !== '2OK' && mydata !== '8OK') {
+      if (!isNaN(mydata)) {
         curr_call = call;
         call.liveCb(function (err, subcall) {
           if (err) {
@@ -51,9 +59,10 @@ var twilio_app = cli.account.getApplication(process.env.app_sid, function (err, 
   app.register();
   app.on('incomingCall', function (call) {
     if (arduinoTcp === null) {
-      call.say('No bot connected.');
+      call.say("I can't do that for you, Hal. I'm offline.");
+    } else {
+      curr_call = call;
+      call.gather(getDigits, {numDigits: 1}).say("Drive me using your dial pad.");
     }
-    curr_call = call;
-    call.gather(getDigits, {numDigits: 1}).say("Beep boop beep");
   });
 });
