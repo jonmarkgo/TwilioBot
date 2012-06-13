@@ -62,7 +62,7 @@ var twilio_app = cli.account.getApplication(process.env.app_sid, function (err, 
       call.say("I can't do that for you, Hal. I'm offline.");
     } else {
       curr_call = call;
-      call.gather(getDigits, {numDigits: 1}).say("Drive me using your dial pad.");
+      call.gather(getDigits, {numDigits: 1}).say("Use 2, 4, 6, and 8 to drive. Press 0 to stop, 5 for distance.");
     }
   });
 });
