@@ -32,8 +32,7 @@ void setup() {
  
   rightservo.attach(rightservoPin);
   leftservo.attach(leftservoPin);
-  rightservo.write(rightStopPos);
-  leftservo.write(leftStopPos);
+  stopMovement();
   pinMode(sonarPin, INPUT);
   pinMode(ledPin, OUTPUT);
 }
