@@ -16,14 +16,14 @@ var tcpServer = net.createServer(function (socket) {
 function getDigits(call, input) {
   console.log('pressed ' + input);
   if (arduinoTcp === null) {
-    call.say("I can't do that for you, Hal. I'm offline.");
+    call.say("I can't do that for you, Dave. I'm offline.");
   } else {
 	curr_call = call;
 	if (['2', '4', '5', '6', '8', '0'].indexOf(input) >= 0) {
 	  arduinoTcp.write(input);
 	  call.gather(getDigits, {numDigits: 1});
 	} else {
-	  call.gather(getDigits, {numDigits: 1}).say("I can't do that for you, Hal. Invalid command.");
+	  call.gather(getDigits, {numDigits: 1}).say("I can't do that for you, Dave. Invalid command.");
 	}
   }
 }
@@ -59,7 +59,7 @@ var twilio_app = cli.account.getApplication(process.env.app_sid, function (err, 
   app.register();
   app.on('incomingCall', function (call) {
     if (arduinoTcp === null) {
-      call.say("I can't do that for you, Hal. I'm offline.");
+      call.say("I can't do that for you, Dave. I'm offline.");
     } else {
       curr_call = call;
       call.gather(getDigits, {numDigits: 1}).say("Use 2, 4, 6, and 8 to drive. Press 0 to stop, 5 for distance.");
